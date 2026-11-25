@@ -1,0 +1,72 @@
+\section{Evidence Provenance and Reproduction Boundaries}
+\label{app:provenance}
+
+\subsection{Source of tables and figures}
+The experimental tables use the selected terminal results reported in the formal study. The task outcome grid, paired counts, overlap partition, removals, binding distributions, recorded-usage distributions, and saved screening curve are preserved from that report. They use its original task order and quantitative values. The figure extraction identifiers and page coordinates are included with the LaTeX sources. Table~\ref{tab:provenance} gives the evidence unit and aggregation used for each result.
+
+\begin{table}[t]
+  \caption{Evidence units and checks for the reported results.}
+  \label{tab:provenance}
+  \begin{tabularx}{\columnwidth}{@{}lX@{}}
+    \toprule
+    Result & Data and check \\
+    \midrule
+    Overall & One terminal record per target and method. Compare identical task IDs within each workload. \\
+    Pairing & Cross-tabulate outcomes on matched IDs. Row and column totals recover each method's success count. \\
+    Goal overlap & Match normalized goal text against the frozen repository. Add both strata to recover each method's total. \\
+    Removals & Use only complete single-removal configurations from the primary archive. \\
+    Binding and gate & Count binding judgments and final gate states separately over the full agent's terminal episodes. \\
+    SQL strata & Group by declared query type. Sum strata to recover the overall DBBench counts. \\
+    Inference & Aggregate archived token usage and decisions over all terminal outcomes, including failures. \\
+    Screening & Preserve saved component measurements and the distinction between recomputing and reusing source features. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\subsection{Requirements for task-level reaggregation}
+Rebuilding the metrics from the task logs requires the original frozen source memory, primary and secondary terminal record files, endpoint and workload configuration, and the corresponding extraction rules. The compact facts described in the formal report include the source hash, raw line number, record hash, method, task ID, and extracted fields. These locate the records used in aggregation. The accompanying manuscript assets preserve reported summaries and figures. Verification of the execution paths, model responses, or environment state requires the full traces and executor configuration.
+
+For success metrics, disjoint source and target IDs should be checked before joining by workload, task ID, and variant. Missing or repeated terminal values should be reported before computing rates. Agent-error attempts determine retry accounting and stay separate from the terminal denominator. For overlap, the normalization and source corpus must be the ones used when selecting the 36 matched goals. For binding, marginal counts should be aggregated separately unless the task-level joint records are available. For cost, model usage and decisions use different counters, and cached response usage is included in the token statistic.
+
+\section{Interface Parameters and Diagnostic Interpretation}
+\label{app:interface}
+
+\subsection{Configuration and budget boundaries}
+Table~\ref{tab:parameters} collects the inspected settings that determine candidate exposure and model allowances. Truncation takes place at several different boundaries. The pre-filter limit bounds the pool from which selected IDs may come. The serializer's length allowance bounds the input contributed by that pool. The smaller selected set constrains the memories passed to binding. The model output allowances are separate from the memory-text allowance used by the policy. As a result, identical memory-text budgets do not ensure identical context sizes across calls. Repair and execution paths can also change how much inference a target requires.
+
+\begin{table}[t]
+  \caption{Inspected retrieval and binding configuration. Token allowances apply to individual stages.}
+  \label{tab:parameters}
+  \begin{tabularx}{\columnwidth}{@{}lX@{}}
+    \toprule
+    Parameter & Setting \\
+    \midrule
+    Eligibility & Same benchmark, successful source \\
+    Feature/order weights & $0.55/0.45$ \\
+    Dense/BM25/structure & $0.45/0.30/0.25$ \\
+    BM25 & $k_1=1.5$, $b=0.75$ \\
+    Pre-filter / selection & Up to 50 candidates / five selected \\
+    Serialization & Nominal 24,000 characters, with the first candidate always retained \\
+    Source action limit & 36 in ScienceWorld, 20 otherwise \\
+    Text clipping & 240 characters/action, 500/goal \\
+    Query prediction & Initial 500-token response allowance \\
+    Correspondence & $\min(1800,250+100m)$ response tokens for $m$ serialized candidates \\
+    Binding & Up to 160 enumerated actions and 500 response tokens \\
+    Target plan & Up to eight steps per requested plan \\
+    Probe threshold & Mapper score at least $0.75$ with nonempty adapted plan \\
+    Policy memory text & Nominal 2,000 tokens via character heuristic \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\subsection{Reading a source-linked decision}
+Consider the stock example in Figure~\ref{fig:motivation}. At screening, the first distinction is whether each stored row belongs to the query's benchmark and records a success. The lexical and dense channels may prefer the price lookup because it mentions the same item. The structural channel can prefer the stock update when the predicted query includes checking, changing, and verifying stock. This example gives no measured ordering or rank score. Its purpose is to show why the adapter needs the candidate actions and their role annotations in addition to a relevance value.
+
+At adaptation, the proposed node pairs can link the source's change and verification steps to target intents. The target plan can substitute book~42 for part~7 and five units for two. Inspecting that output requires the source ID, original actions, proposed pairs, and target plan. An ID can pass the pool-membership check without a validated correspondence, so an audit should also distinguish records present in the serialized prompt from those eligible for fallback. A retained source ID alone cannot show that the mapper saw its action sequence.
+
+At binding, showing the target row and an advertised stock operation may support a clean judgment. Missing row evidence can leave the result ambiguous, even with a high mapping score. The gate can then accept a proposed probe when a selected plan meets Equation~\ref{eq:probe}. This illustrates why the mapper score, binder outcome, and final gate state must remain separate fields. The environment may still reject a subsequent action. The audit would record that feedback separately from the judgment available when the gate made its decision.
+
+\subsection{Aggregate consistency checks}
+The paired comparisons recover both methods' totals. For primary ScienceWorld, the 25 shared successes plus 60 \SM{}-only successes give 85, while the three No-Memory-only successes give 28 for the base agent. For DBBench, 58 shared successes and the two off-diagonal counts, nine and eight, give 67 and 66. These checks preserve the pairing without interpreting disagreements as causal effects of individual stages.
+
+The overlap strata partition the 100 ScienceWorld targets into 36 and 64. Adding the counts across the two strata recovers 28, 42, and 85 successes for No Memory, Voyager-style, and \SM{}. Summing the five declared SQL strata gives 100 tasks with 66 and 67 successes for No Memory and \SM{}. For binding and gate states, each reported distribution sums independently to 100. Their marginal totals cannot recover how often an individual binding label and gate state occurred together.

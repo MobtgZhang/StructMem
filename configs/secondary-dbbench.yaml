@@ -1,0 +1,18 @@
+seed: 42
+output_dir: ../results/secondary-dbbench
+memory_file: ../inputs/train_experiences.json
+online_memory_updates: false
+top_k: 5
+prefilter_k: 50
+memory_token_budget: 2000
+api:
+  config_file: api.example.json
+  model: grok-4.6
+  cache_file: ../results/secondary-dbbench/llm_cache.sqlite3
+methods: [no_memory, voyager, reflexion, expel, memgpt, mcma, agentkb, ours, w_o_roles, w_o_structure, w_o_binding]
+datasets:
+  agentbench:
+    split: standard
+    tasks: 100
+    max_steps: 30
+    options: {suite: dbbench-std, protocol: local_dbbench, max_round: 15}

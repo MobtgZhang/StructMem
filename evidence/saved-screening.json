@@ -1,0 +1,73 @@
+{
+  "note": "Measured with the artifact implementation; see scripts/measure_cost.py.",
+  "repeats": 7,
+  "estimator": "minimum over repeats",
+  "n_actions_per_experience": 8,
+  "rows": [
+    {
+      "pool_size": 100,
+      "bm25_ms": 0.8395019976887852,
+      "structure_ms": 17.877065001812298,
+      "structure_indexed_ms": 2.3945610009832308,
+      "fusion_ms": 0.14971900236560032
+    },
+    {
+      "pool_size": 500,
+      "bm25_ms": 4.347264002717566,
+      "structure_ms": 79.61324599818909,
+      "structure_indexed_ms": 13.484235998475924,
+      "fusion_ms": 0.9317199983343016
+    },
+    {
+      "pool_size": 1000,
+      "bm25_ms": 14.343975999508984,
+      "structure_ms": 192.17327399746864,
+      "structure_indexed_ms": 24.163330999726895,
+      "fusion_ms": 1.5629009976692032
+    },
+    {
+      "pool_size": 2000,
+      "bm25_ms": 21.201026000198908,
+      "structure_ms": 411.22293599983095,
+      "structure_indexed_ms": 40.12631899968255,
+      "fusion_ms": 4.976518001058139
+    },
+    {
+      "pool_size": 5000,
+      "bm25_ms": 79.30975099952775,
+      "structure_ms": 596.8296050014033,
+      "structure_indexed_ms": 61.63271200057352,
+      "fusion_ms": 5.440896999061806
+    }
+  ],
+  "fits": {
+    "bm25_ms": {
+      "slope_ms_per_record": 0.016102983741872832,
+      "intercept_ms": -3.6888282360928706,
+      "r_squared": 0.9823816919714226
+    },
+    "structure_ms": {
+      "slope_ms_per_record": 0.11690520841645018,
+      "intercept_ms": 58.46626672344655,
+      "r_squared": 0.9108671538058483
+    },
+    "structure_indexed_ms": {
+      "slope_ms_per_record": 0.011356549626471129,
+      "intercept_ms": 8.826966442358081,
+      "r_squared": 0.9241659457179485
+    },
+    "fusion_ms": {
+      "slope_ms_per_record": 0.0010819133240947154,
+      "intercept_ms": 0.7514600822548996,
+      "r_squared": 0.767835693624204
+    }
+  },
+  "pool_growth_factor": 50.0,
+  "marginal_ms_per_record": 0.13409010548241773,
+  "marginal_ms_per_record_indexed": 0.028541446692438677,
+  "indexed_speedup": 4.698083700078926,
+  "projection_ms_at_1e4": 1340.9010548241772,
+  "projection_ms_at_1e4_indexed": 285.4144669243868,
+  "screening_ms_at_1000": 208.08015099464683,
+  "screening_ms_at_1000_indexed": 40.07020799690508
+}

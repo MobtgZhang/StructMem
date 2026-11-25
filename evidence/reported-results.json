@@ -1,0 +1,32 @@
+{
+  "provenance": "Transcribed aggregate values from the formal ICDE PDF and corresponding VLDB manuscript. No task-level outcomes are encoded here.",
+  "successes_out_of_100": {
+    "primary/scienceworld": {"no_memory": 28, "voyager": 42, "reflexion": 38, "expel": 35, "memgpt": 42, "mcma": 33, "agentkb": 39, "ours": 85, "w_o_roles": 76, "w_o_structure": 76, "w_o_binding": 81},
+    "primary/agentbench": {"no_memory": 66, "voyager": 66, "reflexion": 64, "expel": 65, "memgpt": 64, "mcma": 64, "agentkb": 64, "ours": 67, "w_o_roles": 66, "w_o_structure": 65, "w_o_binding": 63},
+    "secondary/agentbench": {"no_memory": 65, "voyager": 66, "reflexion": 68, "expel": 65, "memgpt": 68, "mcma": 66, "agentkb": 66, "ours": 58}
+  },
+  "dense_only_successes_out_of_100": {"scienceworld": 44, "agentbench": 62, "alfworld": 82},
+  "primary_pairing": {
+    "scienceworld": {"both": 25, "ours_only": 60, "no_memory_only": 3, "neither": 12},
+    "agentbench": {"both": 58, "ours_only": 9, "no_memory_only": 8, "neither": 25}
+  },
+  "scienceworld_overlap": {
+    "matched": {"tasks": 36, "no_memory": 10, "voyager": 14, "ours": 30},
+    "unmatched": {"tasks": 64, "no_memory": 18, "voyager": 28, "ours": 55}
+  },
+  "dbbench_query_types": {
+    "other": {"tasks": 17, "no_memory": 15, "ours": 12},
+    "counting": {"tasks": 17, "no_memory": 9, "ours": 9},
+    "comparison": {"tasks": 17, "no_memory": 10, "ours": 13},
+    "ranking": {"tasks": 17, "no_memory": 9, "ours": 10},
+    "aggregation": {"tasks": 32, "no_memory": 23, "ours": 23}
+  },
+  "primary_ours_diagnostics": {
+    "scienceworld": {"binding": {"clean": 4, "ambiguous": 22, "not_checked": 74}, "gate": {"use": 4, "probe": 96}},
+    "agentbench": {"binding": {"clean": 97, "ambiguous": 3}, "gate": {"use": 86, "probe": 3, "skip": 11}}
+  },
+  "primary_mean_tokens_thousands_and_decisions": {
+    "scienceworld": {"no_memory": [27.7, 37.9], "voyager": [76.0, 33.9], "ours": [15.2, 16.9]},
+    "agentbench": {"no_memory": [1.5, 2.5], "voyager": [6.7, 2.3], "ours": [14.3, 2.1]}
+  }
+}

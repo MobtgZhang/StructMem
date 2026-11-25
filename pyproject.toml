@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "structmem-eval"
+version = "0.1.0"
+description = "Reproducible structural experience-memory evaluation"
+requires-python = ">=3.10"
+dependencies = [
+  "networkx>=3.0",
+  "numpy>=1.26",
+  "openai>=1.0",
+  "PyYAML>=6.0",
+  "requests>=2.31",
+]
+
+[project.optional-dependencies]
+dense = ["sentence-transformers>=5.0"]
+scienceworld = ["py4j==0.10.9.9"]
+alfworld = ["textworld[pddl]>=1.6.1,<2", "termcolor>=2", "tqdm>=4"]
+test = ["pytest>=8.0", "textworld[pddl]>=1.6.1,<2"]
+
+[project.scripts]
+structmem = "structmem.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["structmem*", "alfworld*", "scienceworld*"]
+
+[tool.setuptools.package-data]
+scienceworld = ["*.jar", "*.tsv", "tasks.json", "LICENSE"]
+alfworld = ["agents/config/*.json", "gen/layouts/*.json", "data/*.pddl", "data/*.twl2", "LICENSE"]
+structmem = ["benchmark_data/*.jsonl", "benchmark_data/*.yaml", "benchmark_data/LICENSE"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

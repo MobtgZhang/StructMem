@@ -1,0 +1,62 @@
+seed: 42
+output_dir: ../results/paper_300_per_method/gpt-5.6-sol/formal
+resume: true
+memory_file: ../results/paper_300_per_method/gpt-5.6-sol/data/memory/train_experiences.json
+online_memory_updates: false
+top_k: 5
+prefilter_k: 50
+memory_token_budget: 2000
+
+api:
+  config_file: ../api.json
+  model: gpt-5.6-sol
+  cache_file: ../results/paper_300_per_method/gpt-5.6-sol/data/llm_cache.sqlite3
+  timeout_seconds: 120
+  max_retries: 8
+  retry_base_seconds: 5
+  retry_max_seconds: 60
+
+# Each method currently receives 300 formal tasks: 100 tasks from each benchmark.
+# Raising tasks back to 300 later resumes from the existing first 100 tasks.
+methods:
+  - no_memory
+  - voyager
+  - reflexion
+  - expel
+  - memgpt
+  - mcma
+  - agentkb
+  - ours
+  - w_o_roles
+  - w_o_structure
+  - w_o_binding
+
+datasets:
+  alfworld:
+    enabled: true
+    split: train
+    tasks: 100
+    max_steps: 50
+    options:
+      data_root: ${ALFWORLD_DATA}
+      offset: 3253
+      pair_manifest: ../results/paper_300_per_method/gpt-5.6-sol/data/pairs/alfworld.json
+  scienceworld:
+    enabled: true
+    split: test
+    tasks: 100
+    max_steps: 50
+    options:
+      engine_max_steps: 100
+      startup_timeout_seconds: 30
+      pair_manifest: ../results/paper_300_per_method/gpt-5.6-sol/data/pairs/scienceworld.json
+  agentbench:
+    enabled: true
+    split: standard
+    tasks: 100
+    max_steps: 30
+    options:
+      suite: dbbench-std
+      protocol: local_dbbench
+      max_round: 15
+      pair_manifest: ../results/paper_300_per_method/gpt-5.6-sol/data/pairs/agentbench.json

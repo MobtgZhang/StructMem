@@ -1,0 +1,27 @@
+seed: 42
+output_dir: ../results/memory-collection
+online_memory_updates: false
+top_k: 0
+prefilter_k: 0
+memory_token_budget: 0
+api:
+  config_file: api.example.json
+  model: gpt-5.6-sol
+  cache_file: ../results/memory-collection/llm_cache.sqlite3
+methods: [no_memory]
+datasets:
+  alfworld:
+    split: train
+    tasks: 100
+    max_steps: 50
+    options: {offset: 0}
+  scienceworld:
+    split: train
+    tasks: 100
+    max_steps: 50
+    options: {engine_max_steps: 100, startup_timeout_seconds: 30}
+  agentbench:
+    split: train
+    tasks: 100
+    max_steps: 30
+    options: {suite: dbbench-env_train, protocol: local_dbbench, max_round: 15}
